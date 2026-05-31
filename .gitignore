@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Local Environment Variables (Critical Security)
+.env
+.env.*
+!.env.example
+
+# Vite Build Outputs
+dist/
+dist-ssr/
+
+# Vercel Local State
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & Editor (Maintain clean repo for others)
+.DS_Store
+.vscode/
+.idea/

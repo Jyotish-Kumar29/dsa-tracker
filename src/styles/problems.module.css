@@ -1,0 +1,308 @@
+.page {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 28px 28px 80px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--textSub);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 24px;
+  transition: color 0.13s;
+}
+
+.backBtn:hover { color: var(--text); }
+
+/* ── Module Hero ── */
+.moduleHero {
+  margin-bottom: 28px;
+}
+
+.moduleTitle {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.moduleSub {
+  font-size: 13px;
+  color: var(--textSub);
+  margin-bottom: 14px;
+  font-family: var(--mono);
+}
+
+.progressTrack {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #0EA5E9, #38BDF8);
+  transition: width 0.4s ease;
+}
+
+/* ── Filters ── */
+.filterRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+
+.searchWrap svg {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--textMuted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 9px 12px 9px 34px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.12s;
+}
+
+.searchInput:focus {
+  border-color: var(--accent);
+}
+
+.searchInput::placeholder {
+  color: var(--textMuted);
+}
+
+.pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--textSub);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.pill:hover { border-color: var(--textMuted); color: var(--text); }
+
+.pillActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.pill.easy.pillActive   { background: transparent; border-color: var(--green);  color: var(--green); }
+.pill.medium.pillActive { background: transparent; border-color: var(--amber);  color: var(--amber); }
+.pill.hard.pillActive   { background: transparent; border-color: var(--red);    color: var(--red); }
+.pill.todo.pillActive   { background: transparent; border-color: var(--purple); color: var(--purple); }
+
+/* ── Table ── */
+.tableWrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusLg);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  text-align: left;
+  padding: 11px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--textMuted);
+  white-space: nowrap;
+  background: var(--bg3);
+}
+
+.thCheck { width: 44px; }
+.thNum   { width: 44px; }
+.thModule { min-width: 130px; }
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.rowDone { opacity: 0.5; }
+
+/* ── Check Button ── */
+.tdCheck { width: 44px; }
+
+.checkBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.13s;
+  flex-shrink: 0;
+}
+
+.checkBtn:hover { border-color: var(--green); }
+
+.checkDone {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+/* ── Cells ── */
+.tdNum {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--textMuted);
+}
+
+.tdName { min-width: 200px; }
+
+.nameBtn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.12s;
+  line-height: 1.4;
+}
+
+.nameBtn:hover { color: var(--accent2); }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.badge.easy   { background: var(--greenDim);  color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
+.badge.medium { background: var(--amberDim);  color: var(--amber); border: 1px solid rgba(252,211,77,0.2); }
+.badge.hard   { background: var(--redDim);    color: var(--red);   border: 1px solid rgba(248,113,113,0.2); }
+
+/* ── Module Tag ── */
+.tdModule { white-space: nowrap; }
+
+.moduleTag {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--accentDim);
+  color: var(--accent2);
+  border: 1px solid rgba(56,189,248,0.12);
+  white-space: nowrap;
+}
+
+/* ── Link Chips ── */
+.tdLinks { white-space: nowrap; }
+
+.linkChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  color: var(--textSub);
+  text-decoration: none;
+  transition: all 0.12s;
+  margin-right: 5px;
+}
+
+.linkChip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.linkChip.gfg:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ── Empty ── */
+.empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--textMuted);
+  font-size: 14px;
+  font-family: var(--mono);
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .page { padding: 20px 16px 60px; }
+  .tdModule { display: none; }
+  .thModule { display: none; }
+  .filterRow { flex-direction: column; align-items: stretch; }
+  .pills { justify-content: flex-start; }
+}

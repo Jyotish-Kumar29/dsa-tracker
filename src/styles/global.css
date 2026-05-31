@@ -1,0 +1,143 @@
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────────── */
+:root {
+  /* Backgrounds — deep navy, easy on the eyes */
+  --bg:       #070B14;
+  --bg2:      #0C1120;
+  --bg3:      #111827;
+  --surface:  #161D2E;
+  --surface2: #1C2438;
+
+  /* Borders */
+  --border:   #1E2840;
+  --border2:  #263048;
+
+  /* Accent — soft cyan-blue, calm not aggressive */
+  --accent:   #38BDF8;
+  --accent2:  #7DD3FC;
+  --accentDim: rgba(56, 189, 248, 0.08);
+
+  /* Semantic colours */
+  --green:    #4ADE80;
+  --greenDim: rgba(74, 222, 128, 0.08);
+  --amber:    #FCD34D;
+  --amberDim: rgba(252, 211, 77, 0.08);
+  --red:      #F87171;
+  --redDim:   rgba(248, 113, 113, 0.08);
+  --purple:   #A78BFA;
+  --purpleDim:rgba(167, 139, 250, 0.08);
+
+  /* Text */
+  --text:     #E2E8F0;
+  --textSub:  #94A3B8;
+  --textMuted:#475569;
+
+  /* Typography */
+  --font:     'IBM Plex Sans', sans-serif;
+  --mono:     'IBM Plex Mono', monospace;
+
+  /* Spacing & shape */
+  --radius:   10px;
+  --radiusLg: 14px;
+  --radiusXl: 18px;
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+/* ─────────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--textMuted); }
+
+/* ─────────────────────────────────────────────
+   LOADING SCREEN
+───────────────────────────────────────────── */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+  color: var(--textSub);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.error-screen h2 {
+  color: var(--red);
+  font-size: 18px;
+}
+
+.error-screen p {
+  color: var(--textSub);
+  max-width: 480px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.error-screen code {
+  font-family: var(--mono);
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--accent);
+}

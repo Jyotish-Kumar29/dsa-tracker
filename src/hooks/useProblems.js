@@ -1,47 +1,50 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { PROBLEMS } from '../data/problems'
+import { PROBLEMS } from '../data/data-index'
 
-export function useProblems() {
+export function useProblems(session) {
   const [problems, setProblems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetchProblems()
-  }, [])
+    if (session) fetchProblems()
+  }, [session])
 
   async function fetchProblems() {
     setLoading(true)
     setError(null)
     try {
-      // Fetch all problems
-      const { data: dbProblems, error: probErr } = await supabase
+      // Fetch without DB sorting
+      const { data: dbProblems, error: e1 } = await supabase
         .from('problems')
         .select('*')
-        .order('module', { ascending: true })
+      if (e1) throw e1
 
-      if (probErr) throw probErr
-
-      // Fetch user progress
-      const { data: progress, error: progErr } = await supabase
+      const { data: progress, error: e2 } = await supabase
         .from('progress')
         .select('problem_id, done')
+      if (e2) throw e2
 
-      if (progErr) throw progErr
-
-      // Merge progress into problems
       const progressMap = {}
       progress?.forEach(p => { progressMap[p.problem_id] = p.done })
 
-      const merged = dbProblems.map(p => ({
-        ...p,
-        done: progressMap[p.id] || false,
-      }))
+      // Create a lookup map to preserve EXACT order from your data files
+      const orderMap = new Map(PROBLEMS.map((p, i) => [p.id, i]))
 
-      setProblems(merged)
+      // Sort database results by the original array index
+      const sortedProblems = dbProblems.sort((a, b) => {
+        const indexA = orderMap.has(a.id) ? orderMap.get(a.id) : 999999
+        const indexB = orderMap.has(b.id) ? orderMap.get(b.id) : 999999
+        return indexA - indexB
+      })
+
+      setProblems(sortedProblems.map(p => ({
+        ...p,
+        subModule: p.sub_module,
+        done: progressMap[p.id] || false
+      })))
     } catch (err) {
-      console.error('Error fetching problems:', err)
       setError(err.message)
     } finally {
       setLoading(false)
@@ -49,58 +52,58 @@ export function useProblems() {
   }
 
   async function toggleDone(problemId, currentDone) {
-    // Optimistic update
-    setProblems(prev =>
-      prev.map(p => p.id === problemId ? { ...p, done: !currentDone } : p)
-    )
-
+    setProblems(prev => prev.map(p => p.id === problemId ? { ...p, done: !currentDone } : p))
     try {
       const { error } = await supabase
         .from('progress')
         .upsert({ problem_id: problemId, done: !currentDone }, { onConflict: 'problem_id' })
-
       if (error) throw error
-    } catch (err) {
-      // Revert on failure
-      setProblems(prev =>
-        prev.map(p => p.id === problemId ? { ...p, done: currentDone } : p)
-      )
-      console.error('Error toggling done:', err)
+    } catch {
+      setProblems(prev => prev.map(p => p.id === problemId ? { ...p, done: currentDone } : p))
+    }
+  }
+
+  function format(p) {
+    const safeDifficulty = p.difficulty
+      ? p.difficulty.charAt(0).toUpperCase() + p.difficulty.slice(1).toLowerCase()
+      : 'Medium';
+
+    return {
+      id: p.id,
+      name: p.name,
+      module: p.module,
+      sub_module: p.subModule || 'General Problems',
+      difficulty: safeDifficulty,
+      lc_url: p.lcUrl || '',
+      gfg_url: p.gfgUrl || '',
+      cn_url: p.cnUrl || '',
+      companies: p.companies || [],
+      statement: p.statement || '',
+      examples: p.examples || [],
+      constraints: p.constraints || [],
+      hints: p.hints || [],
+      approach: p.approach || '',
     }
   }
 
   async function seedDatabase() {
-    // Seeds the initial problems from local data file into Supabase
-    // Call this once from the browser console: window.seedDB()
     try {
-      const formatted = PROBLEMS.map(p => ({
-        id: p.id,
-        name: p.name,
-        module: p.module,
-        difficulty: p.difficulty,
-        lc_url: p.lcUrl || '',
-        gfg_url: p.gfgUrl || '',
-        companies: p.companies || [],
-        statement: p.statement || '',
-        examples: p.examples || [],
-        constraints: p.constraints || [],
-        hints: p.hints || [],
-        approach: p.approach || '',
-      }))
-
-      const { error } = await supabase
-        .from('problems')
-        .upsert(formatted, { onConflict: 'id' })
-
-      if (error) throw error
-      console.log('✅ Database seeded successfully!')
+      const rows = PROBLEMS.map(format)
+      const size = 100
+      for (let i = 0; i < rows.length; i += size) {
+        const { error } = await supabase
+          .from('problems')
+          .upsert(rows.slice(i, i + size), { onConflict: 'id' })
+        if (error) throw error
+        console.log(`Inserted ${Math.min(i + size, rows.length)} / ${rows.length}`)
+      }
+      console.log('Done.')
       await fetchProblems()
     } catch (err) {
-      console.error('❌ Seed failed:', err)
+      console.error('Seed failed:', err.message)
     }
   }
 
-  // Expose seed function globally for one-time setup
   if (typeof window !== 'undefined') {
     window.seedDB = seedDatabase
   }

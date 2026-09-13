@@ -1,10 +1,9 @@
 import { useState, useMemo } from 'react'
 import { ProblemDrawer } from '../components/ProblemDrawer'
-import { SearchIcon, ChevronLeftIcon, ExternalIcon } from '../components/Icons'
+import { SearchIcon } from '../components/Icons'
 import styles from '../styles/problems.module.css'
 
 const DIFFICULTIES = ['All', 'Easy', 'Medium', 'Hard']
-const DIFF_CLASS = { Easy: 'easy', Medium: 'medium', Hard: 'hard' }
 
 export function ProblemsPage({ problems, selectedModule, onBack, onToggle }) {
   const [filter, setFilter] = useState('All')
@@ -31,7 +30,6 @@ export function ProblemsPage({ problems, selectedModule, onBack, onToggle }) {
 
   const total = scopedProblems.length
   const done = scopedProblems.filter(p => p.done).length
-  const pct = total ? Math.round((done / total) * 100) : 0
 
   function handleToggle(id, currentDone) {
     onToggle(id, currentDone)

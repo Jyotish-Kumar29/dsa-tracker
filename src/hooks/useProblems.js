@@ -7,9 +7,11 @@ export function useProblems(session) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const userId = session?.user?.id ?? null
+
   useEffect(() => {
-    if (session) fetchProblems()
-  }, [session])
+    if (userId) fetchProblems()
+  }, [userId])
 
   async function fetchProblems() {
     setLoading(true)

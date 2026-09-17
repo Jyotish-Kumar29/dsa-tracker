@@ -94,7 +94,7 @@ export function HomePage({ problems, onToggleProblem }) {
 
           <div
             className={styles.progressRing}
-            style={{ background: `conic-gradient(#38BDF8 ${stats.pct}%, #333 ${stats.pct}%)` }}
+            style={{ background: `conic-gradient(var(--accent) ${stats.pct}%, var(--border2) ${stats.pct}%)` }}
           >
             <div className={styles.ringInner}>{stats.done}</div>
           </div>

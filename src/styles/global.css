@@ -141,3 +141,40 @@ button {
   font-size: 12px;
   color: var(--accent);
 }
+
+/* ─────────────────────────────────────────────
+   LIGHT THEME OVERRIDES
+───────────────────────────────────────────── */
+:root[data-theme="light"] {
+  --bg:       #F8FAFC;
+  --bg2:      #FFFFFF;
+  --bg3:      #F1F5F9;
+  --surface:  #FFFFFF;
+  --surface2: #EEF2F7;
+
+  --border:   #E2E8F0;
+  --border2:  #CBD5E1;
+
+  --accent:   #0284C7;
+  --accent2:  #0369A1;
+  --accentDim: rgba(2, 132, 199, 0.08);
+
+  --green:    #16A34A;
+  --greenDim: rgba(22, 163, 74, 0.08);
+  --amber:    #B45309;
+  --amberDim: rgba(180, 83, 9, 0.08);
+  --red:      #DC2626;
+  --redDim:   rgba(220, 38, 38, 0.08);
+  --purple:   #7C3AED;
+  --purpleDim:rgba(124, 58, 237, 0.08);
+
+  --text:     #0F172A;
+  --textSub:  #475569;
+  --textMuted:#94A3B8;
+}
+
+/* smooth transition when switching themes */
+body, .modWrapper, .modHeader, .subHeader, .probRow, .heroSection,
+.quoteBanner, .drawer, .table, .tableWrap {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}

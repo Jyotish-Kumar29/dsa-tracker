@@ -97,3 +97,24 @@
 
 .button:hover { opacity: 0.9; }
 .button:disabled { opacity: 0.5; cursor: default; }
+
+.themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--textSub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.13s;
+}
+
+.themeToggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}

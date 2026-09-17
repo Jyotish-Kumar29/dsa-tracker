@@ -5,12 +5,14 @@ import { HomePage } from './pages/HomePage'
 import { useProblems } from './hooks/useProblems'
 import { useToasts } from './hooks/useToasts'
 import { useAuth } from './hooks/useAuth'
+import { useThemes } from './hooks/useThemes'
 import './styles/global.css'
 
 export default function App() {
   const { session, loading: authLoading, signIn, signOut } = useAuth()
   const { problems, loading, error, toggleDone } = useProblems(session)
   const { toasts, addToast, removeToast } = useToasts()
+  const { theme, toggleTheme } = useThemes()
 
   async function handleToggle(id, currentDone) {
     await toggleDone(id, currentDone)
@@ -27,7 +29,7 @@ export default function App() {
   }
 
   if (!session) {
-    return <Login onSignIn={signIn} />
+    return <Login onSignIn={signIn} theme={theme} onToggleTheme={toggleTheme} />
   }
 
   if (loading) {
@@ -56,7 +58,7 @@ export default function App() {
 
   return (
     <>
-      <Nav onSignOut={signOut} />
+      <Nav onSignOut={signOut} theme={theme} onToggleTheme={toggleTheme} />
       <HomePage problems={problems} onToggleProblem={handleToggle} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </>

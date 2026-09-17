@@ -7,8 +7,8 @@
 
 /* Top Dashboard Area */
 .heroSection {
-  background: #111111;
-  border: 1px solid #222;
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 32px;
@@ -20,7 +20,7 @@
 .heroEyebrow {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text);
 }
 
 .heroCircular {
@@ -33,7 +33,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #333; 
+  background: var(--border2); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,7 +44,7 @@
   position: relative;
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text);
 }
 
 .ringDetails {
@@ -58,12 +58,12 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: #999;
+  color: var(--textSub);
 }
 
-.dotEasy { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; }
-.dotMed  { width: 6px; height: 6px; border-radius: 50%; background: #FCD34D; }
-.dotHard { width: 6px; height: 6px; border-radius: 50%; background: #F87171; }
+.dotEasy { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.dotMed  { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); }
+.dotHard { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
 
 /* Nested Accordion */
 .moduleList {
@@ -73,8 +73,8 @@
 }
 
 .modWrapper {
-  background: #0D0D0D;
-  border: 1px solid #262626;
+  background: var(--bg2);
+  border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -87,11 +87,11 @@
   padding: 16px 20px;
   cursor: pointer;
   user-select: none;
-  background: #121212;
+  background: var(--bg3);
   transition: background 0.15s;
 }
 
-.modHeader:hover { background: #1A1A1A; }
+.modHeader:hover { background: var(--surface2); }
 
 .modHeaderLeft {
   display: flex;
@@ -102,23 +102,23 @@
 .modName {
   font-size: 15px;
   font-weight: 500;
-  color: #E5E5E5;
+  color: var(--text);
 }
 
 .fractionText {
   font-family: var(--mono);
   font-size: 13px;
-  color: #888;
+  color: var(--textSub);
 }
 
 /* Sub Level */
 .subContainer {
-  background: #0A0A0A;
-  border-top: 1px solid #262626;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
 }
 
 .subWrapper {
-  border-bottom: 1px solid #1A1A1A;
+  border-bottom: 1px solid var(--border);
 }
 
 .subWrapper:last-child {
@@ -135,7 +135,7 @@
   transition: background 0.15s;
 }
 
-.subHeader:hover { background: #161616; }
+.subHeader:hover { background: var(--surface); }
 
 .subHeaderLeft {
   display: flex;
@@ -146,12 +146,12 @@
 .subName {
   font-size: 14px;
   font-weight: 400;
-  color: #CCCCCC;
+  color: var(--text);
 }
 
 /* Icons */
 .caret {
-  color: #666;
+  color: var(--textMuted);
   font-size: 18px;
   line-height: 1;
   transition: transform 0.2s ease;
@@ -160,13 +160,13 @@
 }
 .caretOpen {
   transform: rotate(90deg);
-  color: #AAA;
+  color: var(--textSub);
 }
 
 /* Problem List Table Inner */
 .probList {
-  background: #000;
-  border-top: 1px solid #1A1A1A;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
   padding-bottom: 10px;
 }
 
@@ -177,8 +177,8 @@
   font-size: 11px;
   text-transform: uppercase;
   font-weight: 600;
-  color: #666;
-  border-bottom: 1px solid #1A1A1A;
+  color: var(--textSub);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 6px;
 }
 
@@ -190,13 +190,13 @@
   transition: background 0.15s;
 }
 
-.probRow:hover { background: #141414; }
+.probRow:hover { background: var(--surface2); }
 
-.probRowDone .cProb { color: #555; text-decoration: line-through; }
+.probRowDone .cProb { color: var(--textMuted); text-decoration: line-through; }
 
 /* Grid Columns Setup */
 .hStatus, .cStatus { width: 60px; flex-shrink: 0; }
-.hProb, .cProb { flex: 1; min-width: 0; padding-right: 16px; font-size: 13px; color: #CCC; }
+.hProb, .cProb { flex: 1; min-width: 0; padding-right: 16px; font-size: 13px; color: var(--text); }
 .hLink, .cLink { width: 100px; flex-shrink: 0; display: flex; justify-content: center; }
 .hDiff, .cDiff { width: 90px; flex-shrink: 0; display: flex; justify-content: flex-end; }
 
@@ -205,21 +205,21 @@
   width: 16px;
   height: 16px;
   border-radius: 4px;
-  border: 1px solid #444;
+  border: 1px solid var(--border2);
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  color: var(--bg);
   cursor: pointer;
 }
-.checkBtn:hover { border-color: #4ADE80; }
-.checkDone { background: #4ADE80; border-color: #4ADE80; }
+.checkBtn:hover { border-color: var(--green); }
+.checkDone { background: var(--green); border-color: var(--green); }
 
 /* Action Links */
 .solveBtn {
   font-size: 11px;
-  color: #FCA5A5;
+  color: var(--textSub);
   background: transparent;
   border: none;
   display: flex;
@@ -227,8 +227,8 @@
   gap: 4px;
   text-decoration: none;
 }
-.solveBtn:hover { color: #EF4444; }
-.noLink { color: #444; font-size: 11px; }
+.solveBtn:hover { color: var(--accent); }
+.noLink { color: var(--textMuted); font-size: 11px; }
 
 /* Badges */
 .badge {
@@ -237,11 +237,11 @@
   font-weight: 500;
   padding: 3px 8px;
   border-radius: 4px;
-  background: #1A1A1A;
+  background: var(--bg3);
 }
-.easy   { color: #4ADE80; border: 1px solid rgba(74,222,128,0.15); }
-.medium { color: #FCD34D; border: 1px solid rgba(252,211,77,0.15); }
-.hard   { color: #F87171; border: 1px solid rgba(248,113,113,0.15); }
+.easy   { color: var(--green); border: 1px solid var(--greenDim); }
+.medium { color: var(--amber); border: 1px solid var(--amberDim); }
+.hard   { color: var(--red);   border: 1px solid var(--redDim); }
 
 /* Mobile */
 @media (max-width: 600px) {
@@ -253,8 +253,8 @@
 
 /* Quote / Info Banner */
 .quoteBanner {
-  background: linear-gradient(135deg, #0F1420, #0A0D16);
-  border: 1px solid #222;
+  background: linear-gradient(135deg, var(--bg2), var(--bg));
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 22px 24px;
   margin-bottom: 20px;
@@ -263,22 +263,22 @@
 .quoteText {
   font-size: 16px;
   font-style: italic;
-  color: #E5E5E5;
+  color: var(--text);
   line-height: 1.5;
   margin-bottom: 6px;
 }
 
 .quoteAuthor {
   font-size: 12px;
-  color: #38BDF8;
+  color: var(--accent);
   margin-bottom: 14px;
 }
 
 .infoText {
   font-size: 13px;
-  color: #999;
+  color: var(--textSub);
   line-height: 1.6;
-  border-top: 1px solid #1E2840;
+  border-top: 1px solid var(--border);
   padding-top: 12px;
 }
 

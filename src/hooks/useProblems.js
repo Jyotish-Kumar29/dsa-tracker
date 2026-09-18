@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-// 1. REMOVE THIS LINE ENTIRELY:
-// import { PROBLEMS } from '../data/data-index'
 
 export function useProblems(session) {
   const [problems, setProblems] = useState([])
@@ -18,7 +16,6 @@ export function useProblems(session) {
     setLoading(true)
     setError(null)
     try {
-      // 2. Fetch the user's progress from Supabase
       const { data: progress, error: fetchError } = await supabase
         .from('progress')
         .select('problem_id, done')
@@ -26,8 +23,6 @@ export function useProblems(session) {
 
       if (fetchError) throw fetchError
 
-      // 3. DYNAMICALLY import the massive data file.
-      // This tells Vite to split it into a separate chunk, unblocking the initial page load.
       const { PROBLEMS } = await import('../data/data-index.js')
 
       const progressMap = {}

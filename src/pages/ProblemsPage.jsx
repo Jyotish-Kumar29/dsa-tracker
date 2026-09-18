@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { ProblemDrawer } from '../components/ProblemDrawer'
-import { SearchIcon } from '../components/Icons'
+import { SearchIcon, ChevronLeftIcon } from '../components/Icons'
 import styles from '../styles/problems.module.css'
 
 const DIFFICULTIES = ['All', 'Easy', 'Medium', 'Hard']

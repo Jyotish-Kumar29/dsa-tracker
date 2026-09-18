@@ -8,14 +8,14 @@ Originally scaffolded and refined with AI assistance, on top of prior hands-on e
 
 DSA Tracker organizes 470+ curated problems into modules and sub-modules (Arrays, Linked Lists, Graphs, Dynamic Programming, and more), each with a difficulty rating, external practice links (LeetCode / GeeksforGeeks / Coding Ninjas), and an in-app breakdown covering the problem statement, examples, constraints, hints, and intended approach.
 
-Progress is stored in Postgres via Supabase and gated behind authentication, so completion state persists across devices instead of living in browser storage — and only the account owner can read or write it.
+Progress is stored in Postgres via Supabase and gated behind authentication, so completion state persists across devices instead of living in browser storage — and each authenticated user can read and write only their own progress.
 
 ## Features
 
 - **Module-based dashboard** — nested accordion view (Module → Sub-module → Problem) with live completion stats and a circular progress ring broken down by difficulty.
 - **Problem detail drawer** — statement, examples, constraints, hints, and approach for every problem without leaving the page.
-- **Authenticated access** — single-account sign-in via Supabase Auth; public sign-ups are disabled at the project level.
-- **Row-level security** — Postgres RLS policies scope all read/write access to the authenticated owner.
+- **Authenticated access** — users sign in via Supabase Auth; public sign-ups are disabled and accounts are added manually through the Supabase Dashboard.
+- **Row-level security** — Postgres RLS policies ensure each user can read and modify only their own progress.
 - **Cross-device sync** — progress is stored server-side, not in `localStorage`.
 
 ## Tech Stack
@@ -27,7 +27,8 @@ Progress is stored in Postgres via Supabase and gated behind authentication, so 
 | Deployment | Vercel                                |
 
 ## Project Structure
-```
+
+```text
 .
 ├── index.html
 ├── package.json
@@ -50,7 +51,7 @@ Progress is stored in Postgres via Supabase and gated behind authentication, so 
 │ │ └── problems_part4.js
 │ ├── hooks
 │ │ ├── useAuth.js # Supabase session management
-│ │ ├── useProblems.js # Fetch, toggle, and seed problems
+│ │ ├── useProblems.js # Load local problems and sync user progress
 │ │ └── useToasts.js
 │ ├── lib
 │ │ └── supabase.js # Supabase client initialisation
@@ -70,57 +71,44 @@ Progress is stored in Postgres via Supabase and gated behind authentication, so 
 
 ## Database Schema
 
-Row Level Security (RLS) is enabled on both tables. The schema below reflects the actual live tables.
+Row Level Security (RLS) is enabled on the `progress` table. The schema below reflects the actual live table.
 
 ```sql
--- Problems table
-create table problems (
-  id          text primary key,
-  name        text not null,
-  module      text not null,
-  sub_module  text,
-  difficulty  text not null,
-  lc_url      text,
-  gfg_url     text,
-  cn_url      text,
-  companies   text[],
-  statement   text,
-  examples    jsonb,
-  constraints text[],
-  hints       text[],
-  approach    text,
-  created_at  timestamptz default now()
+create table public.progress (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  problem_id text not null,
+  done boolean not null default false,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, problem_id)
 );
 
--- Progress table
-create table progress (
-  problem_id  text primary key references problems(id) on delete cascade,
-  done        boolean default false,
-  updated_at  timestamptz default now(),
-  user_id     uuid references auth.users(id) default auth.uid()
-);
+alter table public.progress enable row level security;
 
-alter table problems enable row level security;
-alter table progress enable row level security;
+create policy "Users can read their own progress"
+on public.progress
+for select
+to authenticated
+using (auth.uid() = user_id);
 
--- Problems: readable/writable by any authenticated session
-create policy "Authenticated read problems" on problems
-  for select using (auth.role() = 'authenticated');
+create policy "Users can insert their own progress"
+on public.progress
+for insert
+to authenticated
+with check (auth.uid() = user_id);
 
-create policy "Authenticated write problems" on problems
-  for insert with check (auth.role() = 'authenticated');
+create policy "Users can update their own progress"
+on public.progress
+for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
 
-create policy "Authenticated update problems" on problems
-  for update using (auth.role() = 'authenticated');
-
--- Progress: readable/writable only by its owning user
-create policy "Owner manages own progress" on progress
-  for all
-  using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
+create policy "Users can delete their own progress"
+on public.progress
+for delete
+to authenticated
+using (auth.uid() = user_id);
 ```
-
-> **Note:** `progress.user_id` is currently nullable. For strict per-user isolation, consider running `alter table progress alter column user_id set not null;` once every existing row has an owner assigned.
 
 ## Getting Started
 
@@ -132,49 +120,45 @@ create policy "Owner manages own progress" on progress
 ### Setup
 
 1. **Clone the repository**
+
 ```bash
-   git clone https://github.com/Jyotish-Kumar29/dsa_tracker.git
-   cd dsa_tracker
+git clone https://github.com/Jyotish-Kumar29/dsa_tracker.git
+cd dsa_tracker
 ```
 
 2. **Install dependencies**
+
 ```bash
-   npm install
+npm install
 ```
 
 3. **Configure environment variables**
 
-   Create a `.env` file in the project root:
+Create a `.env.local` file in the project root:
+
 ```env
-   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-   VITE_SUPABASE_ANON_KEY=your_anon_key_here
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your_publishable_key_here
 ```
-   Found under Supabase Dashboard → **Settings → API**.
+
+Found under Supabase Dashboard → **Settings → API**.
 
 4. **Provision the database**
 
-   Run the SQL in the [Database Schema](#database-schema) section via Dashboard → **SQL Editor**.
+Run the SQL in the [Database Schema](#database-schema) section via Dashboard → **SQL Editor**.
 
 5. **Configure authentication**
 
-   This app is designed for single-user, personal access:
-   - Dashboard → **Authentication → Sign In / Providers → Email** → disable "Allow new users to sign up."
-   - Dashboard → **Authentication → Users → Add user** → create your own account (email + password, auto-confirmed).
+This app supports multiple users. Public sign-ups are disabled, and users are added manually through the Supabase Dashboard:
+
+- Dashboard → **Authentication → Sign In / Providers → Email** → disable "Allow new users to sign up."
+- Dashboard → **Authentication → Users → Add user** → create a user account (email + password, auto-confirmed).
 
 6. **Start the development server**
+
 ```bash
-   npm run dev
+npm run dev
 ```
-
-7. **Seed the database** (first run only)
-
-   Open the browser DevTools console and run:
-```js
-   await seedDB()
-```
-   This pushes all problem sets from `src/data` into Supabase.
-
-   Alternatively, `scripts/import-a2z.mjs` can be used for a one-off, script-driven import outside the browser.
 
 ## Deployment (Vercel)
 
@@ -208,9 +192,10 @@ Add a new entry to the relevant `problems_part*.js` file:
 }
 ```
 
-Re-run `await seedDB()` in the browser console to sync changes to Supabase.
+Changes to problem files are included automatically in the next Vercel deployment.
 
 ## Security Notes
 
-- Row Level Security is enforced at the database level, not just the client — even a leaked Supabase anon key cannot read or write `progress` rows without a valid session for the owning account.
-- Public sign-ups are disabled; the only account with access is the one created manually in the Supabase dashboard.
+- Row Level Security is enforced at the database level. Each authenticated user can access only their own `progress` rows.
+- Public sign-ups are disabled. Users are added manually through the Supabase Dashboard.
+- Supabase secret/service-role keys must never be exposed in the frontend or committed to the repository.
